@@ -1,6 +1,6 @@
 
 #include<stdio.h>
-#define size 50
+#define size 5
 
 
 int arr[size],front = -1, rear = -1;
@@ -8,13 +8,15 @@ int arr[size],front = -1, rear = -1;
 
 void enqueue(int val){
 
-    if(rear + 1 == front){
-        printf("Queue is empty..");
+    if((rear + 1) % size == front){
+        printf("Queue is full..");
+        return;
     }
+
     if(front == -1){
         front = 0;
     }
-    rear = (rear + 1)%size;
+    rear = (rear + 1) % size;
 
     arr[rear] = val;
 
@@ -24,14 +26,23 @@ void enqueue(int val){
 int dequeue(){
     int removed_element;
 
-    if(front + 1 > rear){
+    if(front == rear && front != 0){
         printf("IndexError: queue is empty");
         return -1;
     }
 
     removed_element = arr[front];
-    front = (front + 1)%size;
+    front = (front + 1) % size;
 
+    if(front == rear){
+        front = 0;
+        rear = 0;
+    }
+
+    if(front > rear){
+        front = -1;
+        rear = -1;
+    }
 
     return removed_element;
 }
@@ -41,17 +52,14 @@ void display(){
 
     int i = front;
 
-    if((front + 1 > rear) && (front != 0)){
+    if(front == rear && front != 0){
         printf("IndexError: queue is empty");
         return;
     }
 
-
-    while(i <= rear){
-        printf("%d ",arr[i]);
-        i = (i + 1) % size;
+    for(i; i != rear; i = (i + 1)%size){
+        printf("%d",arr[i]);
     }
-
     return;
 }
 
@@ -88,8 +96,6 @@ int main(){
 
             default:
                 printf("\nEnter a valid option");
-
-
 
         }
     }
