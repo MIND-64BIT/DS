@@ -53,7 +53,6 @@ void InsertAt(int idx, int val){
         counter++;
 
         if(curr == NULL){
-            // Insert at the end if index is out of range
             prev->next = NewNode;
             NewNode->next = NULL;
             return;
@@ -71,7 +70,9 @@ int RemoveFromBeginning(){
     }
     struct Node* first = head;
     head = first->next;
-    return first->data;
+    int val = first->data;
+    free(first);
+    return val;
 }
 
 int RemoveFromLast(){
@@ -86,6 +87,7 @@ int RemoveFromLast(){
     if(curr->next == NULL){
         int val = curr->data;
         head = NULL;
+        free(curr);
         return val;
     }
 
@@ -94,7 +96,9 @@ int RemoveFromLast(){
         curr = curr->next;
     }
     prev->next = NULL;
-    return curr->data;
+    int val = curr->data;
+    free(curr);
+    return val;
 }
 
 int RemoveAt(int idx){
@@ -123,7 +127,9 @@ int RemoveAt(int idx){
         }
     }
     prev->next = curr->next;
-    return curr->data;
+    int val = curr->data;
+    free(curr);
+    return val;
 }
 
 void display(){
@@ -135,3 +141,28 @@ void display(){
     }
 
     while(curr != NULL){
+        printf("%d -> ", curr->data);
+        curr = curr->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    InsertInBeginning(10);
+    InsertInBeginning(20);
+    InsertInLast(30);
+    InsertInLast(40);
+    InsertAt(2, 25);
+    display();
+
+    printf("Removed from beginning: %d\n", RemoveFromBeginning());
+    display();
+
+    printf("Removed from last: %d\n", RemoveFromLast());
+    display();
+
+    printf("Removed at index 1: %d\n", RemoveAt(1));
+    display();
+
+    return 0;
+}
